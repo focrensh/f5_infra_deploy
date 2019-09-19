@@ -1,0 +1,8 @@
+provider:
+  server: 18.221.100.27
+  server_port: 8443
+  user: admin
+  password: "{{ vpass }}"
+  validate_certs: false
+aws_tag: adhoc
+ow_enabled: true

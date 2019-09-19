@@ -1,0 +1,98 @@
+{
+    "class": "AS3",
+    "action": "deploy",
+    "persist": true,
+    "declaration": {
+        "class": "ADC",
+        "schemaVersion": "3.12.0",
+        "id": "testid",
+        "label": "HTTP Config",
+        "remark": "Demo App",
+        "demo_aws": {
+            "class": "Tenant",
+            "App1": {
+                "class": "Application",
+                "template": "http",
+                "serviceMain": {
+                    "class": "Service_HTTP",
+                    "virtualAddresses": [
+                        "{{ private_ip }}"
+                    ],
+                    "pool": "web_pool",
+                    "policyWAF": {
+                        "use": "app_asm_policy"
+                    }
+                },
+                "web_pool": {
+                    "class": "Pool",
+                    "monitors": [
+                        "http"
+                    ],
+                    "members": [
+                        {
+                            "servicePort": 8080,
+                            "serverAddresses": [
+                                "10.1.3.202"
+                            ]
+                        }
+                    ]
+                },
+                "app_asm_policy": {
+                    "class": "WAF_Policy",
+                    "url": "{{ waf_url }}",
+                    "ignoreChanges": true
+                }
+            },
+            "App2": {
+                "class": "Application",
+                "template": "http",
+                "serviceMain": {
+                    "class": "Service_HTTP",
+                    "virtualAddresses": [
+                        "192.168.27.10"
+                    ],
+                    "pool": "web_pool"
+                },
+                "web_pool": {
+                    "class": "Pool",
+                    "monitors": [
+                        "http"
+                    ],
+                    "members": [
+                        {
+                            "servicePort": 8080,
+                            "serverAddresses": [
+                                "10.1.3.204"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "App3": {
+                "class": "Application",
+                "template": "http",
+                "serviceMain": {
+                    "class": "Service_HTTP",
+                    "virtualAddresses": [
+                        "192.168.27.11"
+                    ],
+                    "pool": "web_pool"
+                },
+                "web_pool": {
+                    "class": "Pool",
+                    "monitors": [
+                        "http"
+                    ],
+                    "members": [
+                        {
+                            "servicePort": 8080,
+                            "serverAddresses": [
+                                "10.1.3.206"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
